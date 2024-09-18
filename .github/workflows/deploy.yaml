@@ -24,17 +24,17 @@ jobs:
                 echo "image_name=frontend" >> $GITHUB_OUTPUT
                 
             
-            - name: 'Delete any running container'
-              run: |
-                sudo docker stop frontend && sudo docker rm frontend
+            # - name: 'Delete any running container'
+            #   run: |
+            #     sudo docker stop frontend && sudo docker rm frontend
                 
-            - name: "Remove any images on the system"
-              run: |
-                sudo docker rmi -f $( sudo docker images -q)
+            # - name: "Remove any images on the system"
+            #   run: |
+            #     sudo docker rmi -f $( sudo docker images -q)
                 
             - name: "Build a Docker Image"
               run: |
-                sudo docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.tag_generator.outputs.image_name }}:${{ steps.tag_generator.outputs.deployment_tag }} .
+                sudo docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.tag_generator.outputs.image_name }}:${{ steps.tag_generator.outputs.deployment_tag }} frontend/
               
             
             
@@ -42,6 +42,9 @@ jobs:
               run: |
                 sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.tag_generator.outputs.image_name }}:${{ steps.tag_generator.outputs.deployment_tag }} 
                 
+            - name: "Logs in to Docker Again"
+              run: |
+                sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
 
 
             - name: Deploy to frontend-ec2
@@ -54,4 +57,4 @@ jobs:
                     docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.tag_generator.outputs.image_name }}:${{ steps.tag_generator.outputs.deployment_tag }}
                     docker stop ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.tag_generator.outputs.image_name }}:${{ steps.tag_generator.outputs.deployment_tag }} || true
                     docker rm ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.tag_generator.outputs.image_name }}:${{ steps.tag_generator.outputs.deployment_tag }} || true
-                    docker run -d --name frontendbir -p 80:3000 ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.tag_generator.outputs.image_name }}:${{ steps.tag_generator.outputs.deployment_tag }}
+                    docker run -d --name frontendbir -p 3000:3000 ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.tag_generator.outputs.image_name }}:${{ steps.tag_generator.outputs.deployment_tag }}
