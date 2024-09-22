@@ -24,13 +24,13 @@ jobs:
                 echo "image_name=frontend" >> $GITHUB_OUTPUT
                 
             
-            # - name: 'Delete any running container'
-            #   run: |
-            #     sudo docker stop frontend && sudo docker rm frontend
+            - name: 'Delete any running container'
+              run: |
+                sudo docker stop frontend && sudo docker rm frontend
                 
-            # - name: "Remove any images on the system"
-            #   run: |
-            #     sudo docker rmi -f $( sudo docker images -q)
+            - name: "Remove any images on the system"
+              run: |
+                sudo docker rmi -f $( sudo docker images -q)
                 
             - name: "Build a Docker Image"
               run: |
