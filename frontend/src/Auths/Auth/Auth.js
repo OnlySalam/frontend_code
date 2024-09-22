@@ -32,7 +32,7 @@ export function AuthProvider({ children }) {
   //handles when the user is logged in
   const loginUser = async (username, password) => {
     const login_feedback = await axios.post(
-      "/login-user",
+      "http://Process.env.Backend_ip/login-user",
       {
         username: username,
         password: password,
