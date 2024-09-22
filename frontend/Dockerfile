@@ -1,28 +1,7 @@
-FROM node:18-alpine AS BUILD_IMAGE
-WORKDIR /home/app/build
-
-# COPY package.json .
-
-# RUN npm install
-
-COPY . .
-
-# RUN npm run build
-
-
-## The Second build stage
-FROM node:18-alpine AS PROD_BUILD
-
-WORKDIR /home/app/build/
-
-
-COPY --from=BUILD_IMAGE /home/app/build/ /home/app/build/
-
-# COPY package.json .
-
-# COPY .env .
-
-RUN npm install -g serve 
-
-
-CMD ["serve", "-s", "build"]
+FROM node:alpine
+RUN mkdir -p /home/frontend
+COPY . /home/frontend
+WORKDIR /home/frontend
+RUN npm install
+EXPOSE 3000
+CMD ["npm", "run", "start"]
