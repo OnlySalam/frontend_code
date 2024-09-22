@@ -41,9 +41,9 @@ jobs:
                 sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
             
             
-            # - name: "Push the image to Docker Hub"
-            #   run: |
-            #     sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.tag_generator.outputs.image_name }}:${{ steps.tag_generator.outputs.deployment_tag }} 
+            - name: "Push the image to Docker Hub"
+              run: |
+                sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.tag_generator.outputs.image_name }}:${{ steps.tag_generator.outputs.deployment_tag }} 
                 
 
             - name: Build & Deploy
@@ -67,4 +67,3 @@ jobs:
                   sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
                   sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.tag_generator.outputs.image_name }}:${{ steps.tag_generator.outputs.deployment_tag }}
                   sudo docker run -d --name frontend_image -p 3000:3000 ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.tag_generator.outputs.image_name }}:${{ steps.tag_generator.outputs.deployment_tag }}
-                  EOF
