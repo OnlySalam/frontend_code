@@ -26,7 +26,7 @@ jobs:
             
             - name: 'Delete any running container'
               run: |
-                sudo docker stop frontend && sudo docker rm frontend
+                sudo docker stop frontend_image && sudo docker rm frontend_image
                 
             - name: "Remove any images on the system"
               run: |
