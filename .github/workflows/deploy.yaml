@@ -24,9 +24,9 @@ jobs:
                 echo "image_name=frontend" >> $GITHUB_OUTPUT
                 
             
-            - name: 'Delete any running container'
-              run: |
-                sudo docker stop frontend_image && sudo docker rm frontend_image
+            # - name: 'Delete any running container'
+            #   run: |
+            #     sudo docker stop frontend_image && sudo docker rm frontend_image
                 
             - name: "Remove any images on the system"
               run: |
@@ -66,4 +66,4 @@ jobs:
                   sudo apt-get update
                   sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
                   sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.tag_generator.outputs.image_name }}:${{ steps.tag_generator.outputs.deployment_tag }}
-                  sudo docker run -d --name frontend_image -p 3000:3000 ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.tag_generator.outputs.image_name }}:${{ steps.tag_generator.outputs.deployment_tag }}
+                  sudo docker run -d --name frontend_images -p 3000:3000 ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.tag_generator.outputs.image_name }}:${{ steps.tag_generator.outputs.deployment_tag }}
